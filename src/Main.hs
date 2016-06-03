@@ -12,8 +12,7 @@ takeTurn brd m = do
    sqr <- getLine
    en <- try (evaluate (read sqr :: Int) ) :: IO (Either SomeException Int)
    case en of
-      Left _ -> do
-         takeTurn brd m
+      Left _  -> takeTurn brd m
       Right n -> if n >= 0 && n < 9 then
                     case mkMove brd m n of
                        Just brd' ->  return brd'
@@ -26,40 +25,41 @@ runGame brd = do
    --X turn:
    brd <- takeTurn brd X
    if gameWon brd then
-      do
-         putStrLn $ show brd
+      do print brd
          putStrLn "X wins."
    else do --O takes turn:
-      putStrLn $ show brd
+      print brd
       case noMoves brd of
          True  -> putStrLn "Mew."
          False -> do 
             brd <- takeTurn brd O
             if gameWon brd then
-               do
-                  putStrLn $ show brd
+               do print brd
                   putStrLn "O wins."
-            else do
-               putStrLn $ show brd
-               runGame brd
+            else do print brd
+                    runGame brd
 
 
-main :: IO ()
-main = do
-   hSetBuffering stdout NoBuffering
-   let brd = newBoard
-   putStrLn $ show brd
- 
-   --Run Game:
-   runGame brd
- 
-   --Play again? 
+playAgain :: IO ()
+playAgain = do
    putStr "Play again? [y/n]: "
    answer <- getLine
    case answer of
       "n" -> return ()
-      _   -> main
+      "y" -> main
+      _   -> playAgain
+
+
+main :: IO ()
+main = do
+   --Turn off buffering:
+   hSetBuffering stdout NoBuffering
+
+   --Run Game:
+   let brd = newBoard
+   print brd
+   runGame brd
  
-
-
+   --Play again? 
+   playAgain
 
