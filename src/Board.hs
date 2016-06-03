@@ -14,7 +14,7 @@ newtype Board = Board [Marker]
                  deriving Eq
 
 instance Show Board where
-   show (Board b) = "   |   |   \n" ++
+   show (Board b) = "\n   |   |   \n" ++
                     " " ++ show (b !! 0) ++ " | " ++ show (b !! 1) ++ " | " ++ show (b !! 2) ++ " \n" ++
                     "___|___|___\n" ++
                     "   |   |   \n" ++
@@ -22,7 +22,7 @@ instance Show Board where
                     "___|___|___\n" ++
                     "   |   |   \n" ++
                     " " ++ show (b !! 6) ++ " | " ++ show (b !! 7) ++ " | " ++ show (b !! 8) ++ " \n" ++
-                    "   |   |   "
+                    "   |   |   \n"
 
 
 newBoard :: Board
@@ -53,6 +53,10 @@ threeInARow m1 m2 m3 | anyBlank m1 m2 m3 = False
 
 anyBlank :: Marker -> Marker -> Marker -> Bool
 anyBlank m1 m2 m3 = any (==Blank) [m1,m2,m3]
+
+
+noMoves :: Board -> Bool
+noMoves (Board bs) = not $ elem Blank bs
 
 
 replace :: [a] -> a -> Int -> [a]
