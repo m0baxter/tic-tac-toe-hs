@@ -48,7 +48,7 @@ gameWon (Board b) = or triples
 
 threeInARow :: Marker -> Marker -> Marker -> Bool
 threeInARow m1 m2 m3 | anyBlank m1 m2 m3 = False
-                     | otherwise         = m1 == m2 && m2 == m3 && m3 == m1
+                     | otherwise         = m1 == m2 && m1 == m3
 
 
 anyBlank :: Marker -> Marker -> Marker -> Bool
